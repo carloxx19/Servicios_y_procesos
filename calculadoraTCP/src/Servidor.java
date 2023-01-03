@@ -38,28 +38,29 @@ public class Servidor {
                     pedirNumeros(out, in);
                     resultado = numero1 + numero2;
                     out.writeDouble(resultado);
-
                 }
                 case 2 -> {
                     pedirNumeros(out, in);
                     resultado = numero1 - numero2;
                     out.writeDouble(resultado);
-
                 }
                 case 3 -> {
                     pedirNumeros(out, in);
                     resultado = numero1 * numero2;
                     out.writeDouble(resultado);
-
                 }
                 case 4 -> {
                     try {
                         pedirNumeros(out, in);
                         //tenemos que hacer Cast a un numero entero a double para que guarde los decimanes, si no va a dar 0
                         //aunque el resultado de dividir 2 enteros sea double con decimales.
-                        resultado = (double) numero1 / numero2;
-                        System.out.println(resultado);
-                        out.writeDouble(resultado);
+                        if (numero2==0){
+                            out.writeDouble(0);
+                        }else {
+                            resultado = (double) numero1 / numero2;
+                            System.out.println(resultado);
+                            out.writeDouble(resultado);
+                        }
 
                     } catch (ArithmeticException arithmeticException) {
                         System.out.println("Estas diviendo 0 y el resultado es:");
