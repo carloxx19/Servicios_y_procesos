@@ -26,7 +26,7 @@ public class Hilo extends Thread {
     private Tarea menuTarea() {
         String nombre;
         String apellido;
-        int edad = 0;
+        int edad;
         Date fecha = new Date();
         Tarea tarea;
         Persona persona;
@@ -35,13 +35,19 @@ public class Hilo extends Thread {
         nombre = teclado.next();
         System.out.println("Apellido: ");
         apellido = teclado.next();
-        System.out.println("Edad: ");
-        try {
-            edad = teclado.nextInt();
-        } catch (InputMismatchException ex) {
-            System.err.println("Error de carcter,no es un numero");
-            teclado.next();
+
+
+        while (true) {
+            try {
+                System.out.println("Edad: ");
+                edad = teclado.nextInt();
+                break;
+            } catch (InputMismatchException inputMismatchException) {
+                System.err.println("INTRODUCE UN NUMERO, NO LETRA.");
+                teclado.nextLine();
+            }
         }
+
         persona = new Persona(nombre, apellido, edad);
         tarea = new Tarea();
         tarea.setPersona(persona);
@@ -54,53 +60,71 @@ public class Hilo extends Thread {
     }
 
     private void leerTareas(ArrayList<Tarea> tareas) {
-        System.out.println("***REGISTRO DE TAREAS***");
+        int contador = 1;
 
         for (Tarea a : tareas) {
-            System.out.println("Nombre: " + a.getPersona().getNombre());
-            System.out.println("Apellido: " + a.getPersona().getApellido());
-            System.out.println("Edad: " + a.getPersona().getEdad());
-            System.out.println("Fecha:" + a.getFecha());
-            System.out.println("\n" + "Tarea: " + a.getDescripcionTarea());
-            System.out.println("\n" + "--------------------------------------");
+            System.out.println("***TAREA NUMERO: " + (contador++) + "***");
+            System.out.println("Nombre: " + a.getPersona().getNombre() +
+                    "\nApellido: " + a.getPersona().getApellido() +
+                    "\nEdad: " + a.getPersona().getEdad() +
+                    "\nFecha:" + a.getFecha() +
+                    "\n\nTarea: " + a.getDescripcionTarea());
+            System.out.println("--------------------------------------");
         }
     }
 
     @Override
     public void run() {
+
         int seleccion;
-
+        String menuServer;
         try {
-            String menuServer = dataInputStream.readUTF();
-            System.out.println(menuServer);
+            menuServer = dataInputStream.readUTF();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
+
+        while (true) {
             try {
+                System.out.println(menuServer);
                 seleccion = teclado.nextInt();
-                while (seleccion > 2 || seleccion <= 0) {
 
-                    System.out.println("Introduce un numero valido");
-                    seleccion = teclado.nextInt();
+                if (seleccion == 1) {
+                    try {
+                        dataOutputStream.writeInt(seleccion);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                    ArrayList<Tarea> almacenadas;
+                    try {
+                        almacenadas = (ArrayList) objectInputStream.readObject();
+                    } catch (IOException | ClassNotFoundException e) {
+                        throw new RuntimeException(e);
+                    }
+                    //ArrayList<Tarea> almacenadas = (ArrayList) objectInputStream.readObject();
+                    leerTareas(almacenadas);
+                    break;
+
+                } else if (seleccion == 2) {
+                    try {
+                        dataOutputStream.writeInt(seleccion);
+                        String pintar;
+                        pintar = dataInputStream.readUTF();
+                        System.out.println(pintar);
+                        objectOutputStream.writeObject(menuTarea());
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                    break;
+                } else {
+                    System.err.println("VALOR NUMERICO INTRODUCIDO ERRONEO");
                 }
-            } catch (InputMismatchException ex) {
-                System.out.println("Error... introduce un numero");
-                seleccion = 2;
-                teclado.next();
+
+            } catch (InputMismatchException e) {
+                System.err.println("INTRODUZCA UN NUMERO ENTERO");
+                teclado.nextLine();
             }
-
-            dataOutputStream.writeInt(seleccion);
-
-            if (seleccion == 1) {
-                ArrayList<Tarea> almacenadas = (ArrayList) objectInputStream.readObject();
-                //ArrayList<Tarea> almacenadas = (ArrayList) objectInputStream.readObject();
-                leerTareas(almacenadas);
-            } else {
-                String a = dataInputStream.readUTF();
-                System.out.println(a);
-                objectOutputStream.writeObject(menuTarea());
-            }
-
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
         }
     }
 }

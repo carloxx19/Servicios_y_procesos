@@ -11,9 +11,9 @@ public class Servidor {
 
     public static void menu(DataOutputStream seleccion) throws IOException {
         seleccion.writeUTF("""
-                ****Menu Agenga****
-                1: Consultar Tareas
-                2: Registrar Tareas""");
+                ****MENU AGENDA****
+                1.-Consultar Tareas.
+                2.-Registrar Tareas.""");
     }
 
     public static void main(String[] args) throws IOException, ClassNotFoundException {
@@ -33,7 +33,7 @@ public class Servidor {
 
             int selecMenu;
 
-            System.out.println("Servidor Activo.......");
+            System.out.println("SERVER UP.");
             sc = server.accept();
             System.out.println("Cliente conectado");
 

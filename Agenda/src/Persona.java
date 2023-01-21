@@ -1,6 +1,6 @@
 import java.io.Serializable;
 
-public class Persona implements Serializable{
+public class Persona implements Serializable {
 
     private String nombre;
     private String apellido;
@@ -34,10 +34,5 @@ public class Persona implements Serializable{
 
     public void setEdad(int edad) {
         this.edad = edad;
-    }
-    @Override
-    public String toString() {
-
-        return "Persona{" + "Nombre:" + nombre + ", Apellido: " + apellido + ", Edad:" + edad + '}';
     }
 }

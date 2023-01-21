@@ -34,9 +34,4 @@ public class Tarea implements Serializable {
         this.fecha = fecha;
     }
 
-    @Override
-    public String toString() {
-        return "Tareaaaaaaaaaaa{" + "Persona:" + persona + ", Descripcion Tarea:" + descripcionTarea
-                + ", fecha=" + fecha + '}';
-    }
 }
