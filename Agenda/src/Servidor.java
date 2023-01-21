@@ -23,7 +23,6 @@ public class Servidor {
 
         ArrayList<Tarea> tareas = new ArrayList<>();
         while (true) {
-
             //Enviar y recivir respuestas
             DataInputStream in;
             DataOutputStream out;

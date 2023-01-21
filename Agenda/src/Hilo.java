@@ -36,7 +36,6 @@ public class Hilo extends Thread {
         System.out.println("Apellido: ");
         apellido = teclado.next();
 
-
         while (true) {
             try {
                 System.out.println("Edad: ");
@@ -84,7 +83,6 @@ public class Hilo extends Thread {
             throw new RuntimeException(e);
         }
 
-
         while (true) {
             try {
                 System.out.println(menuServer);
@@ -93,18 +91,13 @@ public class Hilo extends Thread {
                 if (seleccion == 1) {
                     try {
                         dataOutputStream.writeInt(seleccion);
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                    ArrayList<Tarea> almacenadas;
-                    try {
+                        ArrayList<Tarea> almacenadas;
                         almacenadas = (ArrayList) objectInputStream.readObject();
+                        leerTareas(almacenadas);
+                        break;
                     } catch (IOException | ClassNotFoundException e) {
                         throw new RuntimeException(e);
                     }
-                    //ArrayList<Tarea> almacenadas = (ArrayList) objectInputStream.readObject();
-                    leerTareas(almacenadas);
-                    break;
 
                 } else if (seleccion == 2) {
                     try {
@@ -113,10 +106,11 @@ public class Hilo extends Thread {
                         pintar = dataInputStream.readUTF();
                         System.out.println(pintar);
                         objectOutputStream.writeObject(menuTarea());
+                        break;
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
-                    break;
+
                 } else {
                     System.err.println("VALOR NUMERICO INTRODUCIDO ERRONEO");
                 }
