@@ -72,10 +72,11 @@ public class Cliente {
         //RECIBIR RESULTADO
         double resultado = in.readDouble();
         String cero = "NaN";
-        if (cero.equalsIgnoreCase(String.valueOf(resultado))|| resultado==0) {
+        if (cero.equalsIgnoreCase(String.valueOf(resultado)) || resultado == 0) {
             System.out.println("Al dividir 0 el resultado siempre va a ser: 0");
         } else {
             System.out.println("El resultado es: " + resultado);
         }
     }
 }
+    
